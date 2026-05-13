@@ -62,7 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   ElevatedButton(
                       onPressed: () async {
-                        final error = authViewModel.validateLogin(
+                        final error = authViewModel.validate(
                           emailController.text,
                           passwordController.text,
                         );

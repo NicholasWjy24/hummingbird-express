@@ -11,7 +11,7 @@ class AuthViewModel extends ChangeNotifier {
   bool isLoading = false;
   String? errorMessage;
 
-  String? validateLogin(
+  String? validate(
       String email,
       String password,
       ) {
