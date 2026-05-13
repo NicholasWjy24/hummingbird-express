@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hummingbird_express/ui/auth/widget/register_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../viewmodel/auth_viewmodel.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,11 +12,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController usernameTextEditingController = TextEditingController();
-  final TextEditingController passwordTextEditingController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel =
+    Provider.of<AuthViewModel>(context);
     return Scaffold(
       body: SafeArea(
           child: Padding(
@@ -24,9 +29,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Username :"),
+                      Text("Email :"),
                       TextField(
-                        controller: usernameTextEditingController,
+                        controller: emailController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -41,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Text("Password :"),
                       TextField(
-                        controller: passwordTextEditingController,
+                        controller: passwordController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -55,26 +60,84 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text("Don't Have Account ?"),
                   ),
                   ElevatedButton(
-                      onPressed: ()  {
-                        if(usernameTextEditingController.text.trim().isEmpty || passwordTextEditingController.text.trim().isEmpty){
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text('Warning'),
-                                content: const Text('Please Input Username and Password'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context, 'OK'),
-                                    child: const Text('OK'),
-                                  ),
-                                ],
+                    onPressed: () async {
+                      final error = authViewModel.validate(
+                        emailController.text,
+                        passwordController.text,
+                      );
+
+                      if (error != null) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: const Text("Warning"),
+                            content: Text(error),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("OK"),
                               ),
-                          );
-                          return;
-                        }
-                      },
-                      child: Text("Login"),
-                  )
+                            ],
+                          ),
+                        );
+                        return;
+                      }
+
+                      await authViewModel.login(
+                        emailController.text,
+                        passwordController.text,
+                      );
+
+                      if (!context.mounted) return;
+
+                      if (authViewModel.errorMessage != null) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: const Text("Error"),
+                            content: Text(
+                              authViewModel.errorMessage!,
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("OK"),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: const Text("Success"),
+                            content: const Text(
+                              "Login success",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const LoginScreen(),
+                                    ),
+                                  );
+                                },
+                                child: const Text("OK"),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    child: Text("Login"),
+                  ),
                 ],
               ),
             ),

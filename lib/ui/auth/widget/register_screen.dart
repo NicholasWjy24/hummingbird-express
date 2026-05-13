@@ -138,7 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
                       },
                       child: Text("Register"),
-                  )
+                  ),
                 ],
               ),
             ),
