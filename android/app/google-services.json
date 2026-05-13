@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "541774402902",
+    "project_id": "hummingbird-express",
+    "storage_bucket": "hummingbird-express.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541774402902:android:45a5520154be80da8672f7",
+        "android_client_info": {
+          "package_name": "com.example.hummingbird_express"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUSZyLvrfJXEKTPkouWlm9NFfK6e0Ly4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
