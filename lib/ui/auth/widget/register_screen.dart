@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hummingbird_express/ui/auth/widget/login_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodel/auth_viewmodel.dart';
@@ -67,7 +68,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         );
 
                         if (error != null) {
-
                           showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
@@ -83,13 +83,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ],
                             ),
                           );
-
                           return;
                         }
+
                         await authViewModel.register(
                           emailController.text,
                           passwordController.text,
                         );
+
+                        if (!context.mounted) return;
+
+                        if (authViewModel.errorMessage != null) {
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: const Text("Error"),
+                              content: Text(
+                                authViewModel.errorMessage!,
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("OK"),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: const Text("Success"),
+                              content: const Text(
+                                "Register success",
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const LoginScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text("OK"),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                       },
                       child: Text("Register"),
                   )

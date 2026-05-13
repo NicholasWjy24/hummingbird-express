@@ -25,12 +25,14 @@ class AuthViewModel extends ChangeNotifier {
     return null;
   }
 
-  Future<void> login(
+  Future<bool> login(
       String email,
       String password,
       ) async {
 
     try {
+      errorMessage = null;
+
       isLoading = true;
       notifyListeners();
 
@@ -39,9 +41,13 @@ class AuthViewModel extends ChangeNotifier {
         password,
       );
 
+      return true;
+
     } on FirebaseAuthException catch (e) {
 
       errorMessage = e.message;
+
+      return false;
 
     } finally {
 
@@ -50,12 +56,15 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> register(
+  Future<bool> register(
       String email,
       String password,
       ) async {
 
     try {
+
+      errorMessage = null;
+
       isLoading = true;
       notifyListeners();
 
@@ -64,9 +73,13 @@ class AuthViewModel extends ChangeNotifier {
         password,
       );
 
+      return true;
+
     } on FirebaseAuthException catch (e) {
 
       errorMessage = e.message;
+
+      return false;
 
     } finally {
 
