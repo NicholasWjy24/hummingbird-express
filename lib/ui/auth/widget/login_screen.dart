@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hummingbird_express/ui/auth/widget/register_screen.dart';
+import 'package:hummingbird_express/ui/home/widget/home_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodel/auth_viewmodel.dart';
@@ -56,7 +57,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   TextButton(
-                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen(),),),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => RegisterScreen(),),);
+                        },
                       child: Text("Don't Have Account ?"),
                   ),
                   ElevatedButton(
@@ -125,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => const LoginScreen(),
+                                      builder: (_) => const HomeScreen(),
                                     ),
                                   );
                                 },
